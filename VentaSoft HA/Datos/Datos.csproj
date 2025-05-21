@@ -41,7 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriaRepository.cs" />
+    <Compile Include="ClienteRepository.cs" />
+    <Compile Include="CompraRepository.cs" />
+    <Compile Include="Conexión.cs" />
+    <Compile Include="NegocioRepository.cs" />
+    <Compile Include="PermisoRepository.cs" />
+    <Compile Include="ProductoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProveedorRepository.cs" />
+    <Compile Include="ReporteRepository.cs" />
+    <Compile Include="RolRepository.cs" />
+    <Compile Include="UsuarioRepository.cs" />
+    <Compile Include="VentaRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entidades\Entidades.csproj">
