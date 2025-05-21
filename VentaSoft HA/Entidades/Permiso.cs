@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Permiso
+    public class Permiso
     {
+        public int IdPermiso { get; set; }
+        public Rol oRol { get; set; }
+        public string NombreMenu { get; set; }
+        public string FechaRegistro { get; set; }
     }
 }
