@@ -10,11 +10,11 @@ namespace Logica
 {
     public class CategoriaService
     {
-        private CategoriaRepository objcategoriaRepository = new CategoriaRepository();
+        private CategoriaRepository categoriaRepository = new CategoriaRepository();
 
         public List<Categoria> Listar()
         {
-            return objcategoriaRepository.Listar();
+            return categoriaRepository.Listar();
         }
 
         public int Registrar(Categoria obj, out string Mensaje)
@@ -33,7 +33,7 @@ namespace Logica
             }
             else
             {
-                return objcategoriaRepository.Registrar(obj, out Mensaje);
+                return categoriaRepository.Registrar(obj, out Mensaje);
             }
 
 
@@ -56,7 +56,7 @@ namespace Logica
             }
             else
             {
-                return objcategoriaRepository.Editar(obj, out Mensaje);
+                return categoriaRepository.Editar(obj, out Mensaje);
             }
 
 
@@ -65,7 +65,7 @@ namespace Logica
 
         public bool Eliminar(Categoria obj, out string Mensaje)
         {
-            return objcategoriaRepository.Eliminar(obj, out Mensaje);
+            return categoriaRepository.Eliminar(obj, out Mensaje);
         }
 
 

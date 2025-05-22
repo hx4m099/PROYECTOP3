@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Logica
 {
-    internal class ReporteService
+    public class ReporteService
     {
-        private CD_Reporte objcd_reporte = new CD_Reporte();
+        private ReporteRepository reporteRepository = new ReporteRepository();
 
         public List<ReporteCompra> Compra(string fechainicio, string fechafin, int idproveedor)
         {
-            return objcd_reporte.Compra(fechainicio, fechafin, idproveedor);
+            return reporteRepository.Compra(fechainicio, fechafin, idproveedor);
         }
 
 
         public List<ReporteVenta> Venta(string fechainicio, string fechafin)
         {
-            return objcd_reporte.Venta(fechainicio, fechafin);
+            return reporteRepository.Venta(fechainicio, fechafin);
         }
     }
 }

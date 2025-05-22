@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Datos;
 
 namespace Logica
 {
-    internal class NegocioService
+    public class NegocioService
     {
-        private CD_Negocio objcd_negocio = new CD_Negocio();
+        private NegocioRepository negocioRepository = new NegocioRepository();
 
 
         public Negocio ObtenerDatos()
         {
-            return objcd_negocio.ObtenerDatos();
+            return negocioRepository.ObtenerDatos();
         }
 
         public bool GuardarDatos(Negocio obj, out string Mensaje)
@@ -42,7 +43,7 @@ namespace Logica
             }
             else
             {
-                return objcd_negocio.GuardarDatos(obj, out Mensaje);
+                return negocioRepository.GuardarDatos(obj, out Mensaje);
             }
 
 
@@ -50,13 +51,13 @@ namespace Logica
 
         public byte[] ObtenerLogo(out bool obtenido)
         {
-            return objcd_negocio.ObtenerLogo(out obtenido);
+            return negocioRepository.ObtenerLogo(out obtenido);
         }
 
 
         public bool ActualizarLogo(byte[] imagen, out string mensaje)
         {
-            return objcd_negocio.ActualizarLogo(imagen, out mensaje);
+            return negocioRepository.ActualizarLogo(imagen, out mensaje);
         }
 
     }

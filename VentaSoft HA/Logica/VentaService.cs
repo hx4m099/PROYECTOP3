@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,37 +9,37 @@ using System.Threading.Tasks;
 
 namespace Logica
 {
-    internal class VentaService
+    public class VentaService
     {
-        private CD_Venta objcd_venta = new CD_Venta();
+        private VentaRepository ventaRepository = new VentaRepository();
 
         public bool RestarStock(int idproducto, int cantidad)
         {
-            return objcd_venta.RestarStock(idproducto, cantidad);
+            return ventaRepository.RestarStock(idproducto, cantidad);
         }
 
         public bool SumarStock(int idproducto, int cantidad)
         {
-            return objcd_venta.SumarStock(idproducto, cantidad);
+            return ventaRepository.SumarStock(idproducto, cantidad);
         }
 
         public int ObtenerCorrelativo()
         {
-            return objcd_venta.ObtenerCorrelativo();
+            return ventaRepository.ObtenerCorrelativo();
         }
 
         public bool Registrar(Venta obj, DataTable DetalleVenta, out string Mensaje)
         {
-            return objcd_venta.Registrar(obj, DetalleVenta, out Mensaje);
+            return ventaRepository.Registrar(obj, DetalleVenta, out Mensaje);
         }
 
         public Venta ObtenerVenta(string numero)
         {
-            Venta oVenta = objcd_venta.ObtenerVenta(numero);
+            Venta oVenta = ventaRepository.ObtenerVenta(numero);
 
             if (oVenta.IdVenta != 0)
             {
-                List<Detalle_Venta> oDetalleVenta = objcd_venta.ObtenerDetalleVenta(oVenta.IdVenta);
+                List<Detalle_Venta> oDetalleVenta = ventaRepository.ObtenerDetalleVenta(oVenta.IdVenta);
                 oVenta.oDetalle_Venta = oDetalleVenta;
             }
 

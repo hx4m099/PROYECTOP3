@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Logica
 {
-    internal class RolService
+    public class RolService
     {
 
-        private CD_Rol objcd_rol = new CD_Rol();
+        private RolRepository rolRepository = new RolRepository();
 
 
         public List<Rol> Listar()
         {
-            return objcd_rol.Listar();
+            return rolRepository.Listar();
         }
     }
 }

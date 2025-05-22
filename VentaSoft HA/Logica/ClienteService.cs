@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Logica
 {
-    internal class ClienteService
+    public class ClienteService
     {
-        private CD_Cliente objcd_Cliente = new CD_Cliente();
+        private ClienteRepository clienteRepository = new ClienteRepository();
 
 
         public List<Cliente> Listar()
         {
-            return objcd_Cliente.Listar();
+            return clienteRepository.Listar();
         }
 
         public int Registrar(Cliente obj, out string Mensaje)
@@ -42,7 +43,7 @@ namespace Logica
             }
             else
             {
-                return objcd_Cliente.Registrar(obj, out Mensaje);
+                return clienteRepository.Registrar(obj, out Mensaje);
             }
 
 
@@ -74,7 +75,7 @@ namespace Logica
             }
             else
             {
-                return objcd_Cliente.Editar(obj, out Mensaje);
+                return clienteRepository.Editar(obj, out Mensaje);
             }
 
 
@@ -83,7 +84,7 @@ namespace Logica
 
         public bool Eliminar(Cliente obj, out string Mensaje)
         {
-            return objcd_Cliente.Eliminar(obj, out Mensaje);
+            return clienteRepository.Eliminar(obj, out Mensaje);
         }
     }
 }

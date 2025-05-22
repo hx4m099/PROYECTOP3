@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Logica
 {
-    internal class ProveedorService
+    public class ProveedorService
     {
-        private CD_Proveedor objcd_Proveedor = new CD_Proveedor();
+        private ProveedorRepository productoRepository = new ProveedorRepository();
 
 
         public List<Proveedor> Listar()
         {
-            return objcd_Proveedor.Listar();
+            return productoRepository.Listar();
         }
 
         public int Registrar(Proveedor obj, out string Mensaje)
@@ -42,7 +43,7 @@ namespace Logica
             }
             else
             {
-                return objcd_Proveedor.Registrar(obj, out Mensaje);
+                return productoRepository.Registrar(obj, out Mensaje);
             }
 
 
@@ -77,7 +78,7 @@ namespace Logica
             }
             else
             {
-                return objcd_Proveedor.Editar(obj, out Mensaje);
+                return productoRepository.Editar(obj, out Mensaje);
             }
 
 
@@ -86,7 +87,7 @@ namespace Logica
 
         public bool Eliminar(Proveedor obj, out string Mensaje)
         {
-            return objcd_Proveedor.Eliminar(obj, out Mensaje);
+            return productoRepository.Eliminar(obj, out Mensaje);
         }
 
     }
