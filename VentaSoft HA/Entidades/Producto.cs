@@ -19,4 +19,12 @@ namespace Entidades
         public bool Estado { get; set; }
         public string FechaRegistro { get; set; }
     }
+
+    public class ProductoVendido
+    {
+        public string Nombre { get; set; }
+        public string Categoria { get; set; }
+        public int TotalVendido { get; set; }
+        public int Stock { get; set; }
+    }
 }

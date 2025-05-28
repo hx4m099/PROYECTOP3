@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entidades
 {
@@ -17,6 +14,7 @@ namespace Entidades
         public decimal MontoPago { get; set; }
         public decimal MontoCambio { get; set; }
         public decimal MontoTotal { get; set; }
+        public decimal DescuentoAplicado { get; set; } = 0; // Nuevo campo para guardar el porcentaje de descuento
         public List<Detalle_Venta> oDetalle_Venta { get; set; }
         public string FechaRegistro { get; set; }
     }
