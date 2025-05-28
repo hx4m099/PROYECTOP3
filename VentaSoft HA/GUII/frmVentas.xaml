@@ -1,0 +1,701 @@
+﻿<Window x:Class="GUI.frmVentas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sistema de Ventas - Registrar Venta" 
+        Height="750" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#F8F9FA"
+        MinHeight="700"
+        MinWidth="1150">
+
+    <Window.Resources>
+        <Style x:Key="RoundButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CompactTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="BorderBrush" Value="#DEE2E6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+
+        <Style x:Key="CompactComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="BorderBrush" Value="#DEE2E6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#495057"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="9"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#495057"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+        </Style>
+
+        <Style x:Key="BirthdayButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="3"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button">
+            <Setter Property="Background" Value="#27AE60"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#229954"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="220"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Grid.ColumnSpan="2" 
+                Background="White" CornerRadius="3" Padding="8" Margin="0,0,0,6" 
+                BorderBrush="#E9ECEF" BorderThickness="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📋" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <TextBlock Text="Registrar Venta" 
+                           FontSize="14" 
+                           FontWeight="Bold" 
+                           Foreground="#2C5AA0"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- FORMULARIOS ORGANIZADOS -->
+        <Border Grid.Row="1" Grid.Column="0" 
+                Background="White" CornerRadius="3" Padding="12" Margin="0,0,6,6"
+                BorderBrush="#E9ECEF" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- INFORMACIÓN VENTA - ORGANIZADA -->
+                <Grid Grid.Row="0" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="📋 Información Venta" 
+                               Style="{StaticResource SectionHeader}" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Tipo Documento:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txttipodocumento" 
+                                 Text="Factura"
+                                 Style="{StaticResource CompactTextBox}" 
+                                 IsReadOnly="True"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Fecha:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtfecha" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 IsReadOnly="True"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- INFORMACIÓN CLIENTE - ORGANIZADA -->
+                <Grid Grid.Row="1" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="👤 Información Cliente" 
+                               Style="{StaticResource SectionHeader}" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Número Documento:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtdocumentocliente" 
+                                 Style="{StaticResource CompactTextBox}"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="2" 
+                            x:Name="btnbuscarcliente"
+                            Content="🔍" 
+                            Width="20" 
+                            Height="20" 
+                            Background="#28A745" 
+                            Foreground="White" 
+                            BorderThickness="0" 
+                            FontSize="8"
+                            Margin="2,12,0,0"
+                            Cursor="Hand"
+                            Click="btnbuscarcliente_Click"
+                            Style="{StaticResource RoundButtonStyle}"/>
+
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Nombre Completo:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtnombrecliente" 
+                                 Style="{StaticResource CompactTextBox}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="5">
+                        <TextBlock Text="Descuento:" Style="{StaticResource FieldLabel}"/>
+                        <Button x:Name="btnDescuentoCumpleanos"
+                                Content="🎂 Cumpleaños" 
+                                Background="#FF6B35" 
+                                Foreground="White" 
+                                BorderThickness="0" 
+                                FontSize="9"
+                                Height="24"
+                                Padding="8,0"
+                                Cursor="Hand"
+                                Click="btnDescuentoCumpleanos_Click"
+                                Style="{StaticResource BirthdayButtonStyle}"
+                                ToolTip="Aplicar descuento por cumpleaños"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- INFORMACIÓN DE PRODUCTO - ORGANIZADA -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="📦 Información de Producto" 
+                               Style="{StaticResource SectionHeader}" 
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Código:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtcodproducto" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 KeyDown="txtcodproducto_KeyDown"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="2" 
+                            x:Name="btnbuscarproducto"
+                            Content="🔍" 
+                            Width="20" 
+                            Height="20" 
+                            Background="#28A745" 
+                            Foreground="White" 
+                            BorderThickness="0" 
+                            FontSize="8"
+                            Margin="2,12,0,0"
+                            Cursor="Hand"
+                            Click="btnbuscarproducto_Click"
+                            Style="{StaticResource RoundButtonStyle}"/>
+
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Producto:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtproducto" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 IsReadOnly="True"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="5">
+                        <TextBlock Text="Precio:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtprecio" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 PreviewTextInput="txtprecio_PreviewTextInput"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="7">
+                        <TextBlock Text="Stock:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtstock" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 IsReadOnly="True"
+                                 Background="#F8F9FA"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="9">
+                        <TextBlock Text="Cant.:" Style="{StaticResource FieldLabel}"/>
+                        <TextBox x:Name="txtcantidad" 
+                                 Style="{StaticResource CompactTextBox}"
+                                 Text="1"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="11" 
+                            x:Name="btnagregarproducto"
+                            Content="➕ Agregar" 
+                            Background="#007BFF" 
+                            Foreground="White" 
+                            Height="24"
+                            BorderThickness="0" 
+                            FontSize="9"
+                            Padding="8,0"
+                            Margin="0,12,0,0"
+                            Cursor="Hand"
+                            Click="btnagregarproducto_Click"
+                            Style="{StaticResource ActionButtonStyle}"/>
+
+                    <!-- Hidden fields -->
+                    <TextBox x:Name="txtidproducto" Visibility="Hidden" Text="0"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- TABLA DE PRODUCTOS - MÁXIMO TAMAÑO -->
+        <Border Grid.Row="2" Grid.Column="0" 
+                Background="White" CornerRadius="3" Padding="8" Margin="0,0,6,0"
+                BorderBrush="#E9ECEF" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="🛒 Productos en la Venta" 
+                           Style="{StaticResource SectionHeader}" 
+                           Margin="0,0,0,6"/>
+
+                <DataGrid Grid.Row="1" 
+                          x:Name="dgvdata" 
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserReorderColumns="False"
+                          CanUserResizeRows="False"
+                          SelectionMode="Single"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#F1F3F4"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F8F9FA"
+                          HeadersVisibility="Column"
+                          Background="White"
+                          BorderThickness="1"
+                          BorderBrush="#E9ECEF"
+                          CellEditEnding="dgvdata_CellEditEnding"
+                          SelectionChanged="dgvdata_SelectionChanged"
+                          RowHeight="35">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#495057"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="10"/>
+                            <Setter Property="Padding" Value="6,4"/>
+                            <Setter Property="BorderBrush" Value="#343A40"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto" 
+                                            Binding="{Binding Producto}" 
+                                            Width="*" 
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="6,3"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Precio" 
+                                            Binding="{Binding Precio, StringFormat=C}" 
+                                            Width="80" 
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="6,3"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="#28A745"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Cant." 
+                                            Binding="{Binding Cantidad}" 
+                                            Width="60" 
+                                            IsReadOnly="False">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="3"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="BorderBrush" Value="#007BFF"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="SubTotal" 
+                                            Binding="{Binding SubTotal, StringFormat=C}" 
+                                            Width="90" 
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="6,3"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="#007BFF"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="" Width="35">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="🗑" 
+                                            Background="#DC3545" 
+                                            Foreground="White" 
+                                            BorderThickness="0" 
+                                            Width="20" 
+                                            Height="20"
+                                            FontSize="8"
+                                            Cursor="Hand"
+                                            ToolTip="Eliminar"
+                                            Click="btneliminar_Click"
+                                            Style="{StaticResource RoundButtonStyle}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                    <!-- Estilo para tabla vacía -->
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Style.Triggers>
+                                <Trigger Property="HasItems" Value="False">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGrid">
+                                                <Border Background="White" BorderBrush="#E9ECEF" BorderThickness="1" CornerRadius="3">
+                                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+                                                        <TextBlock Text="📦" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                        <TextBlock Text="No hay productos agregados" 
+                                                                   FontSize="12" 
+                                                                   FontWeight="Bold" 
+                                                                   Foreground="#6C757D" 
+                                                                   HorizontalAlignment="Center"/>
+                                                        <TextBlock Text="Use el formulario superior para agregar productos" 
+                                                                   FontSize="9" 
+                                                                   Foreground="#ADB5BD" 
+                                                                   HorizontalAlignment="Center" 
+                                                                   Margin="0,2,0,0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Panel de Pago - Lateral -->
+        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
+                Background="White" CornerRadius="3" Padding="8" 
+                BorderBrush="#E9ECEF" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="💳 Pago" Style="{StaticResource SectionHeader}"/>
+
+                <!-- Panel de descuento por cumpleaños -->
+                <Border x:Name="panelDescuentoCumpleanos" 
+                        Background="#FFF4E5" 
+                        CornerRadius="2" 
+                        Padding="6" 
+                        Margin="0,0,0,6"
+                        BorderBrush="#FFB74D"
+                        BorderThickness="1"
+                        Visibility="Collapsed">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <TextBlock Text="🎂" FontSize="10" Margin="0,0,4,0"/>
+                            <TextBlock x:Name="lblMensajeCumpleanos" 
+                                       Text="¡Cumpleaños!" 
+                                       FontWeight="Bold" 
+                                       FontSize="8" 
+                                       Foreground="#E65100"/>
+                        </StackPanel>
+                        <TextBlock x:Name="lblDescuentoAplicado" 
+                                   Text="Descuento 10%" 
+                                   FontSize="8" 
+                                   Foreground="#E65100"/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Margin="0,0,0,6">
+                    <TextBlock Text="Total a Pagar:" Style="{StaticResource FieldLabel}"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" 
+                                   x:Name="lblTotalOriginal" 
+                                   Text="0.00" 
+                                   Foreground="#6C757D" 
+                                   TextDecorations="Strikethrough" 
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,6,0"
+                                   FontSize="8"
+                                   Visibility="Collapsed"/>
+
+                        <TextBox Grid.Row="1" 
+                                 x:Name="txttotalpagar"
+                                 Text="0.00"
+                                 IsReadOnly="True"
+                                 Background="#F8F9FA"
+                                 BorderBrush="#28A745" 
+                                 BorderThickness="2"
+                                 FontWeight="Bold"
+                                 FontSize="12"
+                                 Foreground="#28A745"
+                                 Height="28"
+                                 Padding="6"
+                                 TextChanged="txttotalpagar_TextChanged"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Panel de información del descuento -->
+                <StackPanel x:Name="panelInfoDescuento" Margin="0,0,0,6" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Descuento:" FontSize="8" Foreground="#6C757D"/>
+                        <TextBlock Grid.Column="1" x:Name="lblMontoDescuento" Text="- 0.00" FontSize="8" Foreground="#E65100" FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,6">
+                    <TextBlock Text="Pago con:" Style="{StaticResource FieldLabel}"/>
+                    <TextBox x:Name="txtpagocon" 
+                             Style="{StaticResource CompactTextBox}"
+                             PreviewTextInput="txtpagocon_PreviewTextInput" 
+                             TextChanged="txtpagocon_TextChanged"
+                             Height="24"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,8">
+                    <TextBlock Text="Cambio:" Style="{StaticResource FieldLabel}"/>
+                    <TextBox x:Name="txtcambio" 
+                             Text="0.00"
+                             IsReadOnly="True"
+                             Background="#F8F9FA"
+                             BorderBrush="#DEE2E6" 
+                             BorderThickness="1"
+                             FontWeight="Bold"
+                             FontSize="10"
+                             Height="24"
+                             Padding="4"/>
+                </StackPanel>
+
+                <Button x:Name="btncrearventa"
+                        Content="💾 Crear Venta" 
+                        Background="#28A745" 
+                        Foreground="White" 
+                        Padding="8,6" 
+                        BorderThickness="0" 
+                        FontWeight="Bold"
+                        FontSize="10"
+                        Cursor="Hand"
+                        Click="btncrearventa_Click"
+                        Style="{StaticResource ActionButtonStyle}"/>
+
+                <!-- BOTÓN GUARDAR PDF -->
+                <Button x:Name="btnguardarPDF"
+                        Content="📥 Guardar PDF" 
+                        Style="{StaticResource SuccessButton}"
+                        Margin="0,6,0,0"
+                        Click="btnguardarPDF_Click"/>
+
+                <!-- INFORMACIÓN DE VENTA - MOVIDA AQUÍ -->
+                <Border Background="#E8F4FD" CornerRadius="3" Padding="8" Margin="0,8,0,0"
+                        BorderBrush="#B3D9F2" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="📊 Información de Venta" 
+                                   Style="{StaticResource SectionHeader}" 
+                                   Foreground="#0C5460"
+                                   Margin="0,0,0,8"/>
+
+                        <StackPanel Margin="0,0,0,4">
+                            <TextBlock Text="Usuario:" Style="{StaticResource FieldLabel}" Foreground="#0C5460"/>
+                            <TextBox x:Name="txtusuario" 
+                                     Text="USUARIO ACTUAL"
+                                     Style="{StaticResource CompactTextBox}"
+                                     IsReadOnly="True"
+                                     Background="#F8F9FA"
+                                     FontSize="8"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,4">
+                            <TextBlock Text="Número Documento:" Style="{StaticResource FieldLabel}" Foreground="#0C5460"/>
+                            <TextBox x:Name="txtnumerodocumento" 
+                                     Text="Pendiente..."
+                                     Style="{StaticResource CompactTextBox}"
+                                     IsReadOnly="True"
+                                     Background="#F8F9FA"
+                                     FontSize="8"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,6">
+                            <TextBlock Text="Estado:" Style="{StaticResource FieldLabel}" Foreground="#0C5460"/>
+                            <TextBox x:Name="txtestado" 
+                                     Text="En proceso"
+                                     Style="{StaticResource CompactTextBox}"
+                                     IsReadOnly="True"
+                                     Background="#FFF3CD"
+                                     Foreground="#856404"
+                                     FontSize="8"/>
+                        </StackPanel>
+
+                        <Border Background="#D1ECF1" CornerRadius="2" Padding="4">
+                            <StackPanel>
+                                <TextBlock Text="📋 Resumen" 
+                                           FontWeight="Bold" 
+                                           FontSize="8" 
+                                           Foreground="#0C5460" 
+                                           Margin="0,0,0,2"/>
+                                <TextBlock x:Name="lblResumenProductos"
+                                           Text="Productos: 0" 
+                                           FontSize="7" 
+                                           Foreground="#0C5460"/>
+                                <TextBlock x:Name="lblResumenTotal"
+                                           Text="Total: $0.00" 
+                                           FontSize="7" 
+                                           Foreground="#0C5460"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
