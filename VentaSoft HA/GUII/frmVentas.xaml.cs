@@ -574,6 +574,7 @@ namespace GUI
             int cantidad = 0;
             int stock = 0;
             bool producto_existe = false;
+            ProductoVenta producto_existente = null;
 
             if (int.Parse(txtidproducto.Text) == 0)
             {
@@ -605,11 +606,25 @@ namespace GUI
                 return;
             }
 
-            // Verificar stock disponible considerando productos ya agregados
-            int cantidadYaAgregada = productosVenta
-                .Where(p => p.IdProducto == txtidproducto.Text)
-                .Sum(p => int.Parse(p.Cantidad));
+            // Buscar si el producto ya existe en la lista y guardarlo en producto_existente
+            foreach (ProductoVenta producto in productosVenta)
+            {
+                if (producto.IdProducto == txtidproducto.Text)
+                {
+                    producto_existe = true;
+                    producto_existente = producto;
+                    break;
+                }
+            }
 
+            // Verificar stock disponible considerando productos ya agregados
+            int cantidadYaAgregada = producto_existe ?
+                int.Parse(producto_existente.Cantidad) :
+                productosVenta
+                    .Where(p => p.IdProducto == txtidproducto.Text)
+                    .Sum(p => int.Parse(p.Cantidad));
+
+            // Verificar si hay suficiente stock para la nueva cantidad total
             if ((cantidad + cantidadYaAgregada) > stock)
             {
                 MessageBox.Show($"Stock insuficiente. Disponible: {stock}, Ya agregado: {cantidadYaAgregada}",
@@ -618,17 +633,9 @@ namespace GUI
                 return;
             }
 
-            foreach (ProductoVenta producto in productosVenta)
-            {
-                if (producto.IdProducto == txtidproducto.Text)
-                {
-                    producto_existe = true;
-                    break;
-                }
-            }
-
             if (!producto_existe)
             {
+                // Si el producto no existe, agregarlo como nuevo
                 var nuevoProducto = new ProductoVenta
                 {
                     IdProducto = txtidproducto.Text,
@@ -643,17 +650,22 @@ namespace GUI
                 nuevoProducto.PropertyChanged += NuevoProducto_PropertyChanged;
 
                 productosVenta.Add(nuevoProducto);
-                limpiarProducto();
-                txtcodproducto.Focus();
-
-                // Forzar recálculo del total después de agregar producto
-                calcularTotal();
             }
             else
             {
-                MessageBox.Show("El producto ya está agregado. Use la tabla para modificar la cantidad.",
-                              "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Si el producto ya existe, sumar la cantidad
+                int nuevaCantidad = int.Parse(producto_existente.Cantidad) + cantidad;
+
+                // Actualizar la cantidad del producto existente
+                producto_existente.Cantidad = nuevaCantidad.ToString();
+                // El cálculo del subtotal se hace automáticamente por el PropertyChanged
             }
+
+            limpiarProducto();
+            txtcodproducto.Focus();
+
+            // Forzar recálculo del total después de agregar producto
+            calcularTotal();
         }
 
         private void NuevoProducto_PropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -1201,6 +1213,7 @@ namespace GUI
                           "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
                 string mensajeDescuento = string.Empty;
 
                 if (clienteCumpleanos && descuentoCumpleanos > 0)
@@ -1212,7 +1225,6 @@ namespace GUI
                     mensajeDescuento = string.Empty;
                 }
 
-               
                 // Generar PDF usando la misma lógica que frmDetalleVenta
                 string Texto_Html = Properties.Resources.PlantillaVenta.ToString();
                 Negocio odatos = new NegocioService().ObtenerDatos();
@@ -1277,8 +1289,13 @@ namespace GUI
 
                         pdfDoc.Close();
                         stream.Close();
-                        MessageBox.Show("Factura PDF guardada exitosamente", "Éxito",
-                              MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // ✅ NUEVO: Mostrar mensaje de éxito
+                        MessageBox.Show("Factura PDF guardada exitosamente.\n\nLa tabla se limpiará para iniciar una nueva venta.",
+                                      "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // ✅ NUEVO: Limpiar la tabla y preparar para nueva venta
+                        LimpiarFormularioCompleto();
                     }
                 }
             }
@@ -1286,6 +1303,64 @@ namespace GUI
             {
                 MessageBox.Show($"Error al generar el PDF: {ex.Message}", "Error",
                       MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // ✅ NUEVO MÉTODO: Limpiar formulario completo después de guardar PDF
+        private void LimpiarFormularioCompleto()
+        {
+            try
+            {
+                // Limpiar datos del cliente
+                txtdocumentocliente.Text = "";
+                txtnombrecliente.Text = "";
+                idClienteSeleccionado = "0";
+
+                // Limpiar tabla de productos
+                productosVenta.Clear();
+
+                // Limpiar datos del producto
+                limpiarProducto();
+
+                // Limpiar datos de pago
+                txtpagocon.Text = "";
+                txttotalpagar.Text = "0.00";
+                txtcambio.Text = "0.00";
+                txtcambio.Foreground = new SolidColorBrush(Colors.Black);
+
+                // Resetear estado de cumpleaños y descuentos
+                ResetearDescuentoCumpleanos();
+
+                // Resetear variables de venta
+                numeroDocumentoVenta = "";
+                ventaCompletada = false;
+
+                // Actualizar información de venta en la interfaz
+                if (txtnumerodocumento != null)
+                    txtnumerodocumento.Text = "Pendiente...";
+                if (txtestado != null)
+                {
+                    txtestado.Text = "En proceso";
+                    txtestado.Background = new SolidColorBrush(Color.FromRgb(255, 243, 205)); // Amarillo claro
+                    txtestado.Foreground = new SolidColorBrush(Color.FromRgb(133, 100, 4)); // Amarillo oscuro
+                }
+
+                // Actualizar resumen
+                if (lblResumenProductos != null)
+                    lblResumenProductos.Text = "Productos: 0";
+                if (lblResumenTotal != null)
+                    lblResumenTotal.Text = "Total: $0.00";
+
+                // Enfocar el campo de código de producto para nueva venta
+                txtcodproducto.Focus();
+
+                System.Diagnostics.Debug.WriteLine("✅ Formulario limpiado completamente después de guardar PDF");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error limpiando formulario: {ex.Message}");
+                MessageBox.Show($"Error al limpiar el formulario: {ex.Message}", "Error",
+                              MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

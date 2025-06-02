@@ -316,7 +316,7 @@
                                            FontWeight="Bold" 
                                            Foreground="#2C5AA0" 
                                            Margin="0,0,0,15"/>
-                                <lvc:PieChart x:Name="chartCategorias" Height="300" AnimationsSpeed="0:0:0.5"/>
+                                <lvc:PieChart x:Name="chartCategorias" Height="300" AnimationsSpeed="0:0:0.5" RenderTransformOrigin="0.5,0.499" Loaded="chartCategorias_Loaded"/>
                             </StackPanel>
                         </Border>
 

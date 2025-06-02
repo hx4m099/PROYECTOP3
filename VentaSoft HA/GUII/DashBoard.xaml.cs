@@ -16,6 +16,7 @@ namespace GUI
     public partial class Dashboard : UserControl, INotifyPropertyChanged
     {
         private VentaService ventaService;
+        private ReporteService reporteService; // ✅ NUEVO: Usar el mismo servicio que el reporte
         private DispatcherTimer timer;
 
         // Propiedades para binding
@@ -62,6 +63,7 @@ namespace GUI
             InitializeComponent();
             DataContext = this;
             ventaService = new VentaService();
+            reporteService = new ReporteService(); // ✅ NUEVO: Inicializar ReporteService
 
             CurrencyFormatter = value => value.ToString("C");
 
@@ -103,20 +105,58 @@ namespace GUI
             }
         }
 
+        // ✅ MODIFICADO: Usar ReporteService para obtener datos consistentes
         private void CargarKPIsReales()
         {
             try
             {
                 var fechaActual = DateTime.Now;
 
-                // USAR DATOS REALES DE TU VENTASERVICE
-                VentasTotales = ventaService.ObtenerTotalVentasDelMes(fechaActual.Month, fechaActual.Year);
-                ProductosVendidos = ventaService.ObtenerTotalProductosVendidosDelMes(fechaActual.Month, fechaActual.Year);
-                ClientesActivos = ventaService.ObtenerClientesActivosDelMes(fechaActual.Month, fechaActual.Year);
+                // ✅ NUEVO: Usar el mismo rango de fechas que el reporte por defecto
+                var fechaInicio = fechaActual.AddDays(-30).ToString("yyyy-MM-dd");
+                var fechaFin = fechaActual.ToString("yyyy-MM-dd");
 
-                // Calcular venta promedio
-                int totalVentas = ventaService.ObtenerCorrelativo() - 1;
-                VentaPromedio = totalVentas > 0 ? VentasTotales / totalVentas : 0;
+                // ✅ NUEVO: Usar ReporteService para obtener datos consistentes
+                var reporteVentas = reporteService.Venta(fechaInicio, fechaFin);
+
+                if (reporteVentas != null && reporteVentas.Any())
+                {
+                    // Calcular totales usando los mismos datos que el reporte
+                    VentasTotales = reporteVentas.Sum(r => ConvertirADecimal(r.SubTotal));
+                    ProductosVendidos = reporteVentas.Sum(r => ConvertirAEntero(r.Cantidad));
+
+                    // Contar clientes únicos
+                    ClientesActivos = reporteVentas
+                        .Where(r => !string.IsNullOrEmpty(r.DocumentoCliente))
+                        .Select(r => r.DocumentoCliente)
+                        .Distinct()
+                        .Count();
+
+                    // Calcular venta promedio por transacción
+                    var ventasUnicas = reporteVentas
+                        .GroupBy(r => r.NumeroDocumento)
+                        .Select(g => g.Sum(r => ConvertirADecimal(r.SubTotal)))
+                        .ToList();
+
+                    VentaPromedio = ventasUnicas.Any() ? ventasUnicas.Average() : 0;
+                }
+                else
+                {
+                    VentasTotales = 0;
+                    ProductosVendidos = 0;
+                    ClientesActivos = 0;
+                    VentaPromedio = 0;
+                }
+
+                // ✅ NUEVO: Debug para verificar consistencia
+                System.Diagnostics.Debug.WriteLine("=== DASHBOARD KPIs ===");
+                System.Diagnostics.Debug.WriteLine($"Período: {fechaInicio} a {fechaFin}");
+                System.Diagnostics.Debug.WriteLine($"Registros encontrados: {reporteVentas?.Count ?? 0}");
+                System.Diagnostics.Debug.WriteLine($"Ventas Totales: {VentasTotales:C}");
+                System.Diagnostics.Debug.WriteLine($"Productos Vendidos: {ProductosVendidos}");
+                System.Diagnostics.Debug.WriteLine($"Clientes Activos: {ClientesActivos}");
+                System.Diagnostics.Debug.WriteLine($"Venta Promedio: {VentaPromedio:C}");
+                System.Diagnostics.Debug.WriteLine("=====================");
             }
             catch (Exception ex)
             {
@@ -125,17 +165,53 @@ namespace GUI
                 ClientesActivos = 0;
                 VentaPromedio = 0;
 
+                System.Diagnostics.Debug.WriteLine($"Error en CargarKPIsReales: {ex.Message}");
                 MessageBox.Show($"Error al cargar KPIs: {ex.Message}", "Advertencia",
                               MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
+        // ✅ NUEVO: Métodos auxiliares para conversión (igual que en el reporte)
+        private decimal ConvertirADecimal(object valor)
+        {
+            if (valor == null) return 0;
+
+            if (decimal.TryParse(valor.ToString(), out decimal resultado))
+                return resultado;
+
+            return 0;
+        }
+
+        private int ConvertirAEntero(object valor)
+        {
+            if (valor == null) return 0;
+
+            if (int.TryParse(valor.ToString(), out int resultado))
+                return resultado;
+
+            return 0;
+        }
+
+        // ✅ MODIFICADO: Usar ReporteService para gráficos también
         private void CargarGraficoVentasReales()
         {
             try
             {
-                // USAR DATOS REALES
-                var ventasPorMes = ventaService.ObtenerVentasPorMes(DateTime.Now.Year);
+                var fechaActual = DateTime.Now;
+                var ventasPorMes = new Dictionary<string, decimal>();
+
+                // Obtener datos de los últimos 12 meses
+                for (int i = 11; i >= 0; i--)
+                {
+                    var fecha = fechaActual.AddMonths(-i);
+                    var fechaInicio = new DateTime(fecha.Year, fecha.Month, 1).ToString("yyyy-MM-dd");
+                    var fechaFin = new DateTime(fecha.Year, fecha.Month, DateTime.DaysInMonth(fecha.Year, fecha.Month)).ToString("yyyy-MM-dd");
+
+                    var reporteMes = reporteService.Venta(fechaInicio, fechaFin);
+                    var totalMes = reporteMes?.Sum(r => ConvertirADecimal(r.SubTotal)) ?? 0;
+
+                    ventasPorMes.Add(fecha.ToString("MMM"), totalMes);
+                }
 
                 chartVentas.Series = new SeriesCollection
                 {
@@ -161,38 +237,58 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarGraficoVentasReales: {ex.Message}");
                 MessageBox.Show($"Error al cargar gráfico de ventas: {ex.Message}", "Error",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        // ✅ MODIFICADO: Usar ReporteService para productos más vendidos
         private void CargarGraficoProductosReales()
         {
             try
             {
-                // USAR DATOS REALES
-                var productosMasVendidos = ventaService.ObtenerProductosMasVendidos(6);
+                var fechaActual = DateTime.Now;
+                var fechaInicio = fechaActual.AddDays(-30).ToString("yyyy-MM-dd");
+                var fechaFin = fechaActual.ToString("yyyy-MM-dd");
 
-                chartProductos.Series = new SeriesCollection
+                var reporteVentas = reporteService.Venta(fechaInicio, fechaFin);
+
+                if (reporteVentas != null && reporteVentas.Any())
                 {
-                    new ColumnSeries
+                    var productosMasVendidos = reporteVentas
+                        .GroupBy(r => r.NombreProducto)
+                        .Select(g => new
+                        {
+                            Nombre = g.Key,
+                            TotalVendido = g.Sum(r => ConvertirAEntero(r.Cantidad))
+                        })
+                        .OrderByDescending(p => p.TotalVendido)
+                        .Take(6)
+                        .ToList();
+
+                    chartProductos.Series = new SeriesCollection
                     {
-                        Title = "Productos Vendidos",
-                        Values = new ChartValues<int>(productosMasVendidos.Select(p => p.TotalVendido)),
-                        Fill = new SolidColorBrush(Color.FromRgb(80, 200, 120))
-                    }
-                };
+                        new ColumnSeries
+                        {
+                            Title = "Productos Vendidos",
+                            Values = new ChartValues<int>(productosMasVendidos.Select(p => p.TotalVendido)),
+                            Fill = new SolidColorBrush(Color.FromRgb(80, 200, 120))
+                        }
+                    };
 
-                chartProductos.AxisX.Clear();
-                chartProductos.AxisX.Add(new LiveCharts.Wpf.Axis
-                {
-                    Title = "Productos",
-                    Labels = productosMasVendidos.Select(p => p.Nombre).ToArray(),
-                    Separator = new LiveCharts.Wpf.Separator { Step = 1 }
-                });
+                    chartProductos.AxisX.Clear();
+                    chartProductos.AxisX.Add(new LiveCharts.Wpf.Axis
+                    {
+                        Title = "Productos",
+                        Labels = productosMasVendidos.Select(p => p.Nombre).ToArray(),
+                        Separator = new LiveCharts.Wpf.Separator { Step = 1 }
+                    });
+                }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarGraficoProductosReales: {ex.Message}");
                 MessageBox.Show($"Error al cargar gráfico de productos: {ex.Message}", "Error",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -204,12 +300,19 @@ namespace GUI
             {
                 // USAR DATOS REALES
                 var productos = ventaService.ObtenerProductosConStock();
-                var productosMasVendidos = ventaService.ObtenerProductosMasVendidos(50); // Obtener más para hacer match
+                var fechaActual = DateTime.Now;
+                var fechaInicio = fechaActual.AddDays(-30).ToString("yyyy-MM-dd");
+                var fechaFin = fechaActual.ToString("yyyy-MM-dd");
+
+                var reporteVentas = reporteService.Venta(fechaInicio, fechaFin);
+                var ventasPorProducto = reporteVentas?
+                    .GroupBy(r => r.NombreProducto)
+                    .ToDictionary(g => g.Key, g => g.Sum(r => ConvertirAEntero(r.Cantidad))) ??
+                    new Dictionary<string, int>();
 
                 var datosStock = productos.Select(p =>
                 {
-                    var productoVendido = productosMasVendidos.FirstOrDefault(pv => pv.Nombre == p.Nombre);
-                    int vendidos = productoVendido?.TotalVendido ?? 0;
+                    int vendidos = ventasPorProducto.ContainsKey(p.Nombre) ? ventasPorProducto[p.Nombre] : 0;
 
                     return new ProductoStock
                     {
@@ -225,6 +328,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarDatosStockReales: {ex.Message}");
                 MessageBox.Show($"Error al cargar datos de stock: {ex.Message}", "Error",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -234,66 +338,70 @@ namespace GUI
         {
             try
             {
-                // CALCULAR DATOS REALES POR CATEGORÍA
-                var productos = ventaService.ObtenerProductosConStock();
-                var productosMasVendidos = ventaService.ObtenerProductosMasVendidos(100);
+                var fechaActual = DateTime.Now;
+                var fechaInicio = fechaActual.AddDays(-30).ToString("yyyy-MM-dd");
+                var fechaFin = fechaActual.ToString("yyyy-MM-dd");
 
-                var ventasPorCategoria = productos
-                    .GroupBy(p => p.oCategoria.Descripcion)
-                    .Select(g =>
-                    {
-                        var ventasCategoria = productosMasVendidos
-                            .Where(pv => productos.Any(p => p.Nombre == pv.Nombre && p.oCategoria.Descripcion == g.Key))
-                            .Sum(pv => pv.TotalVendido);
+                var reporteVentas = reporteService.Venta(fechaInicio, fechaFin);
 
-                        return new { Categoria = g.Key, TotalVendido = ventasCategoria };
-                    })
-                    .Where(x => x.TotalVendido > 0)
-                    .ToList();
-
-                var totalGeneral = ventasPorCategoria.Sum(x => x.TotalVendido);
-
-                var categorias = new List<CategoriaVenta>();
-                var colores = new[] {
-                    Color.FromRgb(59, 130, 246),
-                    Color.FromRgb(16, 185, 129),
-                    Color.FromRgb(245, 158, 11),
-                    Color.FromRgb(239, 68, 68),
-                    Color.FromRgb(139, 92, 246)
-                };
-
-                for (int i = 0; i < ventasPorCategoria.Count && i < colores.Length; i++)
+                if (reporteVentas != null && reporteVentas.Any())
                 {
-                    var venta = ventasPorCategoria[i];
-                    var porcentaje = totalGeneral > 0 ? (decimal)venta.TotalVendido / totalGeneral * 100 : 0;
+                    var ventasPorCategoria = reporteVentas
+                        .GroupBy(r => r.Categoria)
+                        .Select(g => new
+                        {
+                            Categoria = g.Key,
+                            TotalVendido = g.Sum(r => ConvertirADecimal(r.SubTotal))
+                        })
+                        .Where(x => x.TotalVendido > 0)
+                        .OrderByDescending(x => x.TotalVendido)
+                        .ToList();
 
-                    categorias.Add(new CategoriaVenta
+                    var totalGeneral = ventasPorCategoria.Sum(x => x.TotalVendido);
+
+                    var categorias = new List<CategoriaVenta>();
+                    var colores = new[] {
+                        Color.FromRgb(59, 130, 246),
+                        Color.FromRgb(16, 185, 129),
+                        Color.FromRgb(245, 158, 11),
+                        Color.FromRgb(239, 68, 68),
+                        Color.FromRgb(139, 92, 246)
+                    };
+
+                    for (int i = 0; i < ventasPorCategoria.Count && i < colores.Length; i++)
                     {
-                        Nombre = venta.Categoria,
-                        Porcentaje = porcentaje,
-                        Monto = VentasTotales * (porcentaje / 100),
-                        Color = new SolidColorBrush(colores[i])
-                    });
-                }
+                        var venta = ventasPorCategoria[i];
+                        var porcentaje = totalGeneral > 0 ? (venta.TotalVendido / totalGeneral) * 100 : 0;
 
-                // Configurar gráfico circular
-                chartCategorias.Series = new SeriesCollection();
-                foreach (var categoria in categorias)
-                {
-                    chartCategorias.Series.Add(new PieSeries
+                        categorias.Add(new CategoriaVenta
+                        {
+                            Nombre = venta.Categoria,
+                            Porcentaje = porcentaje,
+                            Monto = venta.TotalVendido,
+                            Color = new SolidColorBrush(colores[i])
+                        });
+                    }
+
+                    // Configurar gráfico circular
+                    chartCategorias.Series = new SeriesCollection();
+                    foreach (var categoria in categorias)
                     {
-                        Title = categoria.Nombre,
-                        Values = new ChartValues<decimal> { categoria.Porcentaje },
-                        Fill = categoria.Color,
-                        DataLabels = true,
-                        LabelPoint = chartPoint => $"{categoria.Nombre}: {chartPoint.Y:F1}%"
-                    });
-                }
+                        chartCategorias.Series.Add(new PieSeries
+                        {
+                            Title = categoria.Nombre,
+                            Values = new ChartValues<decimal> { categoria.Porcentaje },
+                            Fill = categoria.Color,
+                            DataLabels = true,
+                            LabelPoint = chartPoint => $"{categoria.Nombre}: {chartPoint.Y:F1}%"
+                        });
+                    }
 
-                lstCategorias.ItemsSource = categorias;
+                    lstCategorias.ItemsSource = categorias;
+                }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarDatosCategorias: {ex.Message}");
                 MessageBox.Show($"Error al cargar datos de categorías: {ex.Message}", "Error",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -318,6 +426,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarVentasRecientesReales: {ex.Message}");
                 MessageBox.Show($"Error al cargar ventas recientes: {ex.Message}", "Error",
                               MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -347,6 +456,11 @@ namespace GUI
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void chartCategorias_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

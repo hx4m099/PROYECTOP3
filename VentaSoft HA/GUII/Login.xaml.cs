@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using Entidades;
 using Logica;
-using VentaSoftHA.Logica; 
+using VentaSoftHA.Logica;
 
 namespace GUI
 {
@@ -56,12 +56,49 @@ namespace GUI
                         return;
                     }
 
-                    // Abrir ventana principal
-                    Inicio form = new Inicio(ousuario);
+                    // ✅ MODIFICADO: Cargar permisos usando el IdUsuario
+                    var permisos = new PermisoService().Listar(ousuario.IdUsuario);
+
+                    // Verificar que el usuario tenga permisos asignados
+                    if (permisos == null || !permisos.Any())
+                    {
+                        MessageBox.Show("El usuario no tiene permisos asignados. Contacte al administrador.",
+                                      "Sin Permisos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    // ✅ MODIFICADO: Mostrar información de debug (sin usar IdRol directamente)
+                    System.Diagnostics.Debug.WriteLine("=== INFORMACIÓN DE LOGIN ===");
+                    System.Diagnostics.Debug.WriteLine($"Usuario: {ousuario.NombreCompleto}");
+                    System.Diagnostics.Debug.WriteLine($"Documento: {ousuario.Documento}");
+                    System.Diagnostics.Debug.WriteLine($"IdUsuario: {ousuario.IdUsuario}");
+
+                    // Verificar si existe la propiedad oRol
+                    if (ousuario.oRol != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Rol: {ousuario.oRol.Descripcion}");
+                        System.Diagnostics.Debug.WriteLine($"IdRol: {ousuario.oRol.IdRol}");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Rol: No definido");
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"Estado: {ousuario.Estado}");
+                    System.Diagnostics.Debug.WriteLine($"Permisos encontrados: {permisos.Count}");
+
+                    foreach (var permiso in permisos)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"- Permiso: {permiso.NombreMenu}");
+                    }
+                    System.Diagnostics.Debug.WriteLine("========================");
+
+                    // Abrir ventana principal pasando usuario Y permisos
+                    Inicio form = new Inicio(ousuario, permisos);
                     form.Show();
                     this.Hide();
 
-                    // Suscribirse al evento Closing
+                    // Suscribirse al evento Closing para volver al login cuando se cierre
                     form.Closing += frm_closing;
                 }
                 else
@@ -77,8 +114,12 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
-                              MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al iniciar sesión: {ex.Message}\n\nDetalles: {ex.StackTrace}",
+                              "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Debug adicional
+                System.Diagnostics.Debug.WriteLine($"ERROR EN LOGIN: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"STACK TRACE: {ex.StackTrace}");
             }
         }
 
@@ -166,14 +207,15 @@ namespace GUI
             txtdocumento.Text = "";
             txtclave.Password = "";
 
+            // Crear nueva instancia del login y mostrarla
             Login login = new Login();
             login.Show();
 
             // Enfocar el campo de documento
-            txtdocumento.Focus();
+            login.txtdocumento.Focus();
         }
 
-        // Evento para manejar Enter en los campos
+        // Evento para manejar Enter en el campo documento
         private void txtdocumento_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
@@ -182,6 +224,7 @@ namespace GUI
             }
         }
 
+        // Evento para manejar Enter en el campo contraseña
         private void txtclave_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
@@ -194,6 +237,17 @@ namespace GUI
         private void Login_Loaded(object sender, RoutedEventArgs e)
         {
             txtdocumento.Focus();
+        }
+
+        // Eventos de TextChanged (pueden estar vacíos si no los usas)
+        private void txtdocumento_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            // Puedes agregar lógica aquí si necesitas validación en tiempo real
+        }
+
+        private void txtdocumento_TextChanged_1(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            // Evento duplicado - puedes eliminarlo si no lo usas
         }
     }
 }

@@ -417,6 +417,11 @@ namespace GUI
             decimal margenPotencial = totalVentaPotencial - totalCompras;
             lblMargenPotencial.Text = margenPotencial.ToString("C", CultureInfo.CurrentCulture);
         }
+
+        private void cboproveedor_SelectionChanged()
+        {
+
+        }
     }
 
     public class ReporteCompraGrid
