@@ -1,2 +1,2 @@
-# PROYECTOP3
-Sistema de Gestión de Ventas
+# VentaSoft HA
+Sistema de gestión de ventas
