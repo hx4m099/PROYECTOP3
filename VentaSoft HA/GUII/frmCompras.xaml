@@ -1,19 +1,19 @@
 ﻿<Window x:Class="GUI.frmCompras"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Sistema de Ventas - Registrar Compra" Height="800" Width="1100"
+        Title="Sistema de Ventas - Registrar Compra" Height="800" Width="1400"
         WindowStartupLocation="CenterScreen"
         Background="#F5F7FA"
         Loaded="frmCompras_Load">
 
     <Window.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="BorderBrush" Value="#E1E8ED"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
                     <Setter Property="BorderBrush" Value="#3498DB"/>
@@ -23,28 +23,29 @@
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="8,6"/>
             <Setter Property="BorderBrush" Value="#E1E8ED"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
 
         <Style TargetType="Label">
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="#2C3E50"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
+            <Setter Property="Padding" Value="0"/>
         </Style>
 
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="#3498DB"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Padding" Value="12,6"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -66,9 +67,9 @@
             <Setter Property="Background" Value="#27AE60"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Padding" Value="15,8"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -90,9 +91,9 @@
             <Setter Property="Background" Value="#E67E22"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Padding" Value="12,6"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -113,248 +114,302 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        <!-- Header Compacto -->
         <Border Grid.Row="0" Background="White">
             <Border.Effect>
                 <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="2" Opacity="0.1" BlurRadius="10"/>
             </Border.Effect>
-            <Grid Margin="30,0">
+            <Grid Margin="20,0">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Background="#E67E22" Width="50" Height="50" CornerRadius="25" Margin="0,0,20,0">
-                        <TextBlock Text="🛒" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Background="#E67E22" Width="40" Height="40" CornerRadius="20" Margin="0,0,15,0">
+                        <TextBlock Text="🛒" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Registrar Compra" FontSize="24" FontWeight="Bold" Foreground="#2C3E50"/>
-                        <TextBlock Text="Gestiona las compras y actualiza el inventario" FontSize="14" Foreground="#7F8C8D"/>
+                        <TextBlock Text="Registrar Compra" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                        <TextBlock Text="Gestiona las compras y actualiza el inventario" FontSize="11" Foreground="#7F8C8D"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Contenido Principal -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="30,20,30,30">
+        <!-- Formularios Compactos en una fila -->
+        <Border Grid.Row="1" Background="White" Margin="15,10,15,0" CornerRadius="8" Padding="15">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="2" Opacity="0.1" BlurRadius="8"/>
+            </Border.Effect>
 
-                <!-- Información de Compra y Proveedor -->
-                <Grid Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                    <!-- Información Compra -->
-                    <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="25">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                        </Border.Effect>
-
-                        <StackPanel>
-                            <TextBlock Text="📊 Información Compra" FontSize="18" FontWeight="Bold" 
-                                       Foreground="#2C3E50" Margin="0,0,0,20"/>
-
-                            <Label Content="Fecha"/>
-                            <TextBox x:Name="txtfecha" IsReadOnly="True" Background="#F8F9FA"/>
-
-                            <Label Content="Tipo Documento"/>
-                            <Label x:Name="lbltipodocumento" Content="Factura" Background="#F8F9FA" Padding="12,8" BorderBrush="#E1E8ED" BorderThickness="1" FontSize="13" Margin="0,0,0,10"/>
-
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Información Proveedor -->
-                    <Border Grid.Column="2" Background="White" CornerRadius="10" Padding="25">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                        </Border.Effect>
-
-                        <StackPanel>
-                            <TextBlock Text="🏢 Información Proveedor" FontSize="18" FontWeight="Bold" 
-                                       Foreground="#2C3E50" Margin="0,0,0,20"/>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                                    <Label Content="Número Documento"/>
-                                    <TextBox x:Name="txtdocproveedor" IsReadOnly="True" Background="#F8F9FA"/>
-
-                                    <Label Content="Razón Social"/>
-                                    <TextBox x:Name="txtnombreproveedor" IsReadOnly="True" Background="#F8F9FA"/>
-                                </StackPanel>
-
-                                <Button Grid.Column="1" x:Name="btnbuscarproveedor" Content="🔍" 
-                                        Style="{StaticResource PrimaryButton}" 
-                                        VerticalAlignment="Bottom" Margin="0,0,0,10"
-                                        Width="40" Height="35"
-                                        Click="btnbuscarproveedor_Click"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Información de Producto -->
-                <Border Background="White" CornerRadius="10" Padding="25" Margin="0,0,0,20">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                    </Border.Effect>
-
-                    <StackPanel>
-                        <TextBlock Text="📦 Información de Producto" FontSize="18" FontWeight="Bold" 
-                                   Foreground="#2C3E50" Margin="0,0,0,20"/>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                                <Label Content="Cód. Producto"/>
-                                <Grid>
-                                    <TextBox x:Name="txtcodproducto" KeyDown="txtcodproducto_KeyDown"/>
-                                    <Button x:Name="btnbuscarproducto" Content="🔍" 
-                                            Style="{StaticResource PrimaryButton}" 
-                                            HorizontalAlignment="Right" VerticalAlignment="Center"
-                                            Width="30" Height="25" Margin="0,0,5,10"
-                                            Click="btnbuscarproducto_Click"/>
-                                </Grid>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="1" Margin="10,0">
-                                <Label Content="Producto"/>
-                                <TextBox x:Name="txtproducto" IsReadOnly="True" Background="#F8F9FA"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2" Margin="10,0">
-                                <Label Content="Precio Compra"/>
-                                <TextBox x:Name="txtpreciocompra" KeyDown="txtpreciocompra_KeyDown"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="3" Margin="10,0">
-                                <Label Content="Precio Venta"/>
-                                <TextBox x:Name="txtprecioventa" KeyDown="txtprecioventa_KeyDown"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="4" Margin="10,0">
-                                <Label Content="Cantidad"/>
-                                <TextBox x:Name="txtcantidad" Text="1"/>
-                            </StackPanel>
-
-                            <Button Grid.Column="5" x:Name="btnagregarproducto" Content="➕ Agregar" 
-                                    Style="{StaticResource AddButton}" 
-                                    VerticalAlignment="Bottom" Margin="10,0,0,10"
-                                    Click="btnagregarproducto_Click"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- Lista de Productos -->
-                <Border Background="White" CornerRadius="10" Padding="25" Margin="0,0,0,20">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                    </Border.Effect>
-
-                    <StackPanel>
-                        <TextBlock Text="📋 Productos Agregados" FontSize="18" FontWeight="Bold" 
-                                   Foreground="#2C3E50" Margin="0,0,0,20"/>
-
-                        <DataGrid x:Name="dgvdata" AutoGenerateColumns="False" 
-                                  CanUserAddRows="False" CanUserDeleteRows="False" 
-                                  IsReadOnly="True" SelectionMode="Single"
-                                  GridLinesVisibility="Horizontal" 
-                                  HeadersVisibility="Column"
-                                  Background="White" 
-                                  BorderThickness="1" BorderBrush="#E1E8ED"
-                                  RowBackground="White" AlternatingRowBackground="#F8F9FA"
-                                  FontSize="13" Height="200">
-
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="IdProducto" Binding="{Binding IdProducto}" Width="0" Visibility="Hidden"/>
-                                <DataGridTextColumn Header="Producto" Binding="{Binding Producto}" Width="*" MinWidth="200"/>
-                                <DataGridTextColumn Header="Precio Compra" Binding="{Binding PrecioCompra}" Width="120"/>
-                                <DataGridTextColumn Header="Precio Venta" Binding="{Binding PrecioVenta}" Width="120"/>
-                                <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}" Width="100"/>
-                                <DataGridTextColumn Header="SubTotal" Binding="{Binding SubTotal}" Width="120"/>
-                                <DataGridTemplateColumn Header="Eliminar" Width="80">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Content="🗑" Background="#E74C3C" Foreground="White" 
-                                                    BorderThickness="0" Padding="5" Cursor="Hand"
-                                                    Click="btnEliminar_Click"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-
-                            <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background" Value="#E67E22"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Padding" Value="10,8"/>
-                                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
-                                    <Setter Property="BorderBrush" Value="#D35400"/>
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
-                        </DataGrid>
-                    </StackPanel>
-                </Border>
-
-                <!-- Total y Registro -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Total -->
-                    <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="25" Margin="0,0,20,0">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                        </Border.Effect>
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="💰 Total a Pagar: " FontSize="18" FontWeight="Bold" 
-                                       Foreground="#2C3E50" VerticalAlignment="Center"/>
-                            <TextBox x:Name="txttotalpagar" Text="0.00" FontWeight="Bold" FontSize="18"
-                                     Background="#E8F6F3" BorderBrush="#27AE60" 
-                                     Width="150" IsReadOnly="True" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Botón Registrar -->
-                    <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="25">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
-                        </Border.Effect>
-
-                        <StackPanel VerticalAlignment="Center">
-                            <Button x:Name="btnregistrar" Content="💾 Registrar Compra" 
-                                    Style="{StaticResource SuccessButton}"
-                                    Click="btnregistrar_Click"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Campos ocultos -->
-                <StackPanel Visibility="Hidden">
-                    <TextBox x:Name="txtidproveedor" Text="0"/>
-                    <TextBox x:Name="txtidproducto" Text="0"/>
+                <!-- Información Compra -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="📊 Info. Compra" FontSize="13" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,8"/>
+                    <Label Content="Fecha"/>
+                    <TextBox x:Name="txtfecha" IsReadOnly="True" Background="#F8F9FA" Height="28"/>
+                    <Label Content="Tipo Documento"/>
+                    <Label x:Name="lbltipodocumento" Content="Factura" Background="#F8F9FA" Padding="8,6" BorderBrush="#E1E8ED" BorderThickness="1" FontSize="12" Height="28"/>
                 </StackPanel>
 
-            </StackPanel>
-        </ScrollViewer>
+                <!-- Información Proveedor -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="🏢 Info. Proveedor" FontSize="13" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="35"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Número Documento"/>
+                            <TextBox x:Name="txtdocproveedor" IsReadOnly="True" Background="#F8F9FA" Height="28"/>
+                            <Label Content="Razón Social"/>
+                            <TextBox x:Name="txtnombreproveedor" IsReadOnly="True" Background="#F8F9FA" Height="28"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" x:Name="btnbuscarproveedor" Content="🔍" 
+                                Style="{StaticResource PrimaryButton}" 
+                                VerticalAlignment="Bottom" Margin="5,0,0,8"
+                                Width="30" Height="28"
+                                Click="btnbuscarproveedor_Click"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Información de Producto -->
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="📦 Agregar Producto" FontSize="13" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Código"/>
+                            <Grid>
+                                <TextBox x:Name="txtcodproducto" Height="28" KeyDown="txtcodproducto_KeyDown"/>
+                                <Button x:Name="btnbuscarproducto" Content="🔍" 
+                                        Style="{StaticResource PrimaryButton}" 
+                                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        Width="25" Height="20" Margin="0,0,3,8"
+                                        Click="btnbuscarproducto_Click"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <Label Content="Producto"/>
+                            <TextBox x:Name="txtproducto" IsReadOnly="True" Background="#F8F9FA" Height="28"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4">
+                            <Label Content="P. Compra"/>
+                            <TextBox x:Name="txtpreciocompra" Height="28" KeyDown="txtpreciocompra_KeyDown"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="6">
+                            <Label Content="P. Venta"/>
+                            <TextBox x:Name="txtprecioventa" Height="28" KeyDown="txtprecioventa_KeyDown"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="8">
+                            <Label Content="Cant."/>
+                            <TextBox x:Name="txtcantidad" Text="1" Height="28"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Botón Agregar -->
+                <Button Grid.Column="6" x:Name="btnagregarproducto" Content="➕ Agregar" 
+                        Style="{StaticResource AddButton}" 
+                        VerticalAlignment="Bottom" Margin="0,0,0,8"
+                        Height="32"
+                        Click="btnagregarproducto_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- TABLA PRINCIPAL - Ocupa la mayor parte del espacio -->
+        <Border Grid.Row="2" Background="White" Margin="15,10,15,0" CornerRadius="8" Padding="15">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" Opacity="0.1" BlurRadius="15"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="📋 PRODUCTOS AGREGADOS" FontSize="16" FontWeight="Bold" 
+                           Foreground="#2C3E50" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                <DataGrid Grid.Row="1" x:Name="dgvdata" AutoGenerateColumns="False" 
+                          CanUserAddRows="False" CanUserDeleteRows="False" 
+                          IsReadOnly="True" SelectionMode="Single"
+                          GridLinesVisibility="Horizontal" 
+                          HeadersVisibility="Column"
+                          Background="White" 
+                          BorderThickness="1" BorderBrush="#E1E8ED"
+                          RowBackground="White" AlternatingRowBackground="#F8F9FA"
+                          FontSize="12">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="IdProducto" Binding="{Binding IdProducto}" Width="0" Visibility="Hidden"/>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding Producto}" Width="*" MinWidth="250">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="#2C3E50"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Precio Compra" Binding="{Binding PrecioCompra, StringFormat=C}" Width="130">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#E67E22"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Precio Venta" Binding="{Binding PrecioVenta, StringFormat=C}" Width="130">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#27AE60"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="SubTotal" Binding="{Binding SubTotal, StringFormat=C}" Width="140">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#3498DB"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="13"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- ✅ MODIFICADO: Columna de acciones con botones Editar y Eliminar -->
+                        <DataGridTemplateColumn Header="Acciones" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <!-- ✅ NUEVO: Botón Editar -->
+                                        <Button Content="✏ Editar" Background="#3498DB" Foreground="White" 
+                                                BorderThickness="0" Padding="6,3" Cursor="Hand"
+                                                FontSize="9" FontWeight="Bold" Margin="0,0,3,0"
+                                                Click="btnEditarProducto_Click"/>
+                                        <!-- ✅ EXISTENTE: Botón Eliminar -->
+                                        <Button Content="🗑 Quitar" Background="#E74C3C" Foreground="White" 
+                                                BorderThickness="0" Padding="6,3" Cursor="Hand"
+                                                FontSize="9" FontWeight="Bold"
+                                                Click="btnEliminar_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#E67E22"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Padding" Value="12,10"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                            <Setter Property="BorderBrush" Value="#D35400"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="MinHeight" Value="35"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Total y Registro Compacto -->
+        <Border Grid.Row="3" Background="White" Margin="15,10,15,15" CornerRadius="8" Padding="15">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="2" Opacity="0.1" BlurRadius="8"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Total -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="💰 TOTAL A PAGAR: " FontSize="16" FontWeight="Bold" 
+                               Foreground="#2C3E50" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txttotalpagar" Text="0.00" FontWeight="Bold" FontSize="16"
+                             Background="#E8F6F3" BorderBrush="#27AE60" BorderThickness="2"
+                             Width="150" IsReadOnly="True" VerticalAlignment="Center" 
+                             Padding="10,8" TextAlignment="Right"/>
+                </StackPanel>
+
+                <!-- Botón Registrar -->
+                <Button Grid.Column="3" x:Name="btnregistrar" Content="💾 REGISTRAR COMPRA" 
+                        Style="{StaticResource SuccessButton}"
+                        FontSize="14" Padding="25,12"
+                        Click="btnregistrar_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Campos ocultos -->
+        <StackPanel Visibility="Hidden">
+            <TextBox x:Name="txtidproveedor" Text="0"/>
+            <TextBox x:Name="txtidproducto" Text="0"/>
+        </StackPanel>
     </Grid>
 </Window>

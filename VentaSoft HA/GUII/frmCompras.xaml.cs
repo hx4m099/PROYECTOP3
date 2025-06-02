@@ -29,6 +29,11 @@ namespace GUI
         private Usuario _Usuario;
         private ObservableCollection<ProductoCompra> productosCompra;
 
+        // Variables para controlar el modo edición
+        private bool modoEdicion = false;
+        private ProductoCompra productoEnEdicion = null;
+        private int indiceProductoEnEdicion = -1;
+
         public frmCompras(Usuario oUsuario = null)
         {
             _Usuario = oUsuario;
@@ -39,10 +44,7 @@ namespace GUI
 
         private void frmCompras_Load(object sender, RoutedEventArgs e)
         {
-            // Inicializar la fecha con la fecha actual
             txtfecha.Text = DateTime.Now.ToString("dd/MM/yyyy");
-
-            // Enfocar el primer campo editable
             txtcodproducto.Focus();
         }
 
@@ -132,7 +134,6 @@ namespace GUI
 
         private void txtpreciocompra_KeyDown(object sender, KeyEventArgs e)
         {
-            // Permitir teclas de control (Backspace, Delete, Tab, Enter, etc.)
             if (e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab ||
                 e.Key == Key.Enter || e.Key == Key.Left || e.Key == Key.Right ||
                 e.Key == Key.Home || e.Key == Key.End)
@@ -140,19 +141,16 @@ namespace GUI
                 return;
             }
 
-            // Permitir números del 0-9
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
                 return;
             }
 
-            // Permitir números del teclado numérico
             if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
             {
                 return;
             }
 
-            // Permitir punto decimal (solo uno)
             if (e.Key == Key.OemPeriod || e.Key == Key.Decimal)
             {
                 TextBox textBox = sender as TextBox;
@@ -162,13 +160,11 @@ namespace GUI
                 }
             }
 
-            // Bloquear cualquier otra tecla
             e.Handled = true;
         }
 
         private void txtprecioventa_KeyDown(object sender, KeyEventArgs e)
         {
-            // Permitir teclas de control (Backspace, Delete, Tab, Enter, etc.)
             if (e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab ||
                 e.Key == Key.Enter || e.Key == Key.Left || e.Key == Key.Right ||
                 e.Key == Key.Home || e.Key == Key.End)
@@ -176,19 +172,16 @@ namespace GUI
                 return;
             }
 
-            // Permitir números del 0-9
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
                 return;
             }
 
-            // Permitir números del teclado numérico
             if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
             {
                 return;
             }
 
-            // Permitir punto decimal (solo uno)
             if (e.Key == Key.OemPeriod || e.Key == Key.Decimal)
             {
                 TextBox textBox = sender as TextBox;
@@ -198,7 +191,6 @@ namespace GUI
                 }
             }
 
-            // Bloquear cualquier otra tecla
             e.Handled = true;
         }
 
@@ -207,7 +199,6 @@ namespace GUI
             decimal preciocompra = 0;
             decimal precioventa = 0;
             int cantidad = 0;
-            bool producto_existe = false;
 
             if (int.Parse(txtidproducto.Text) == 0)
             {
@@ -240,17 +231,95 @@ namespace GUI
                 return;
             }
 
-            foreach (ProductoCompra producto in productosCompra)
+            // ✅ MODO EDICIÓN: Actualizar producto existente
+            if (modoEdicion && productoEnEdicion != null)
             {
-                if (producto.IdProducto == txtidproducto.Text)
+                // ✅ NUEVO: Crear un nuevo objeto con los datos actualizados
+                var productoActualizado = new ProductoCompra
                 {
-                    producto_existe = true;
-                    break;
-                }
+                    IdProducto = productoEnEdicion.IdProducto,
+                    Producto = productoEnEdicion.Producto,
+                    PrecioCompra = preciocompra.ToString("0.00"),
+                    PrecioVenta = precioventa.ToString("0.00"),
+                    Cantidad = cantidad.ToString(),
+                    SubTotal = (cantidad * preciocompra).ToString("0.00")
+                };
+
+                // ✅ NUEVO: Reemplazar el objeto completo en la colección
+                productosCompra[indiceProductoEnEdicion] = productoActualizado;
+
+                MessageBox.Show($"Producto '{productoActualizado.Producto}' actualizado correctamente",
+                              "Producto Actualizado", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                SalirModoEdicion();
+                calcularTotal();
+                limpiarProducto();
+                ActualizarVista(); // ✅ NUEVO: Forzar actualización
+                txtcodproducto.Focus();
+                return;
             }
 
-            if (!producto_existe)
+            // MODO NORMAL: Buscar si el producto ya existe
+            var productoExistente = productosCompra.FirstOrDefault(p => p.IdProducto == txtidproducto.Text);
+
+            if (productoExistente != null)
             {
+                var resultado = MessageBox.Show(
+                    $"El producto '{txtproducto.Text}' ya está en la lista.\n\n" +
+                    $"Cantidad actual: {productoExistente.Cantidad}\n" +
+                    $"Precio compra actual: ${productoExistente.PrecioCompra}\n" +
+                    $"Precio venta actual: ${productoExistente.PrecioVenta}\n\n" +
+                    $"¿Desea actualizar la información?\n\n" +
+                    $"• SÍ: Sumar cantidad ({cantidad}) y actualizar precios\n" +
+                    $"• NO: Mantener información actual\n" +
+                    $"• CANCELAR: No agregar nada",
+                    "Producto Existente",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    int cantidadActual = Convert.ToInt32(productoExistente.Cantidad);
+                    int nuevaCantidad = cantidadActual + cantidad;
+
+                    // ✅ NUEVO: Crear objeto actualizado y reemplazar
+                    var productoActualizado = new ProductoCompra
+                    {
+                        IdProducto = productoExistente.IdProducto,
+                        Producto = productoExistente.Producto,
+                        PrecioCompra = preciocompra.ToString("0.00"),
+                        PrecioVenta = precioventa.ToString("0.00"),
+                        Cantidad = nuevaCantidad.ToString(),
+                        SubTotal = (nuevaCantidad * preciocompra).ToString("0.00")
+                    };
+
+                    var index = productosCompra.IndexOf(productoExistente);
+                    productosCompra[index] = productoActualizado;
+
+                    MessageBox.Show(
+                        $"Producto actualizado:\n" +
+                        $"• Nueva cantidad: {nuevaCantidad}\n" +
+                        $"• Precio compra: ${preciocompra:0.00}\n" +
+                        $"• Precio venta: ${precioventa:0.00}\n" +
+                        $"• Nuevo subtotal: ${(nuevaCantidad * preciocompra):0.00}",
+                        "Producto Actualizado",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+
+                    calcularTotal();
+                    limpiarProducto();
+                    ActualizarVista(); // ✅ NUEVO: Forzar actualización
+                    txtcodproducto.Focus();
+                }
+                else if (resultado == MessageBoxResult.No)
+                {
+                    limpiarProducto();
+                    txtcodproducto.Focus();
+                }
+            }
+            else
+            {
+                // AGREGAR NUEVO: Producto no existe
                 productosCompra.Add(new ProductoCompra
                 {
                     IdProducto = txtidproducto.Text,
@@ -263,13 +332,88 @@ namespace GUI
 
                 calcularTotal();
                 limpiarProducto();
+                ActualizarVista(); // ✅ NUEVO: Forzar actualización
                 txtcodproducto.Focus();
+
+                MessageBox.Show($"Producto '{txtproducto.Text}' agregado correctamente",
+                              "Producto Agregado", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else
+        }
+
+        // ✅ NUEVO: Método para forzar actualización de la vista
+        private void ActualizarVista()
+        {
+            try
             {
-                MessageBox.Show("El producto ya está agregado", "Validación",
-                              MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Método 1: Refrescar el DataGrid
+                dgvdata.Items.Refresh();
+
+                // Método 2: Alternativo - Reasignar el ItemsSource
+                // dgvdata.ItemsSource = null;
+                // dgvdata.ItemsSource = productosCompra;
+
+                System.Diagnostics.Debug.WriteLine("✅ Vista actualizada correctamente");
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando vista: {ex.Message}");
+            }
+        }
+
+        private void btnEditarProducto_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var producto = button?.DataContext as ProductoCompra;
+
+            if (producto != null)
+            {
+                try
+                {
+                    modoEdicion = true;
+                    productoEnEdicion = producto;
+                    indiceProductoEnEdicion = productosCompra.IndexOf(producto);
+
+                    txtidproducto.Text = producto.IdProducto;
+                    txtproducto.Text = producto.Producto;
+                    txtpreciocompra.Text = producto.PrecioCompra;
+                    txtprecioventa.Text = producto.PrecioVenta;
+                    txtcantidad.Text = producto.Cantidad;
+
+                    var productoInfo = new ProductoService().Listar()
+                        .FirstOrDefault(p => p.IdProducto.ToString() == producto.IdProducto);
+
+                    if (productoInfo != null)
+                    {
+                        txtcodproducto.Text = productoInfo.Codigo;
+                        txtcodproducto.Background = new SolidColorBrush(Colors.LightBlue);
+                    }
+
+                    btnagregarproducto.Content = "💾 Actualizar";
+                    btnagregarproducto.Background = new SolidColorBrush(Color.FromRgb(52, 152, 219));
+
+                    MessageBox.Show($"Modo edición activado para '{producto.Producto}'.\n\n" +
+                                  "Modifique los valores y presione 'Actualizar' para guardar los cambios.",
+                                  "Modo Edición", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    txtpreciocompra.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar producto para edición: {ex.Message}", "Error",
+                                  MessageBoxButton.OK, MessageBoxImage.Error);
+                    SalirModoEdicion();
+                }
+            }
+        }
+
+        private void SalirModoEdicion()
+        {
+            modoEdicion = false;
+            productoEnEdicion = null;
+            indiceProductoEnEdicion = -1;
+
+            btnagregarproducto.Content = "➕ Agregar";
+            btnagregarproducto.Background = new SolidColorBrush(Color.FromRgb(230, 126, 34));
         }
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
@@ -279,8 +423,29 @@ namespace GUI
 
             if (producto != null)
             {
-                productosCompra.Remove(producto);
-                calcularTotal();
+                var resultado = MessageBox.Show(
+                    $"¿Está seguro de eliminar el producto '{producto.Producto}'?\n\n" +
+                    $"Cantidad: {producto.Cantidad}\n" +
+                    $"Subtotal: ${producto.SubTotal}",
+                    "Confirmar Eliminación",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    if (modoEdicion && productoEnEdicion == producto)
+                    {
+                        SalirModoEdicion();
+                        limpiarProducto();
+                    }
+
+                    productosCompra.Remove(producto);
+                    calcularTotal();
+                    ActualizarVista(); // ✅ NUEVO: Forzar actualización
+
+                    MessageBox.Show("Producto eliminado correctamente",
+                                  "Producto Eliminado", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
         }
 
@@ -307,6 +472,13 @@ namespace GUI
 
         private void btnregistrar_Click(object sender, RoutedEventArgs e)
         {
+            if (modoEdicion)
+            {
+                MessageBox.Show("Debe completar o cancelar la edición del producto antes de registrar la compra.",
+                              "Edición Pendiente", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (Convert.ToInt32(txtidproveedor.Text) == 0)
             {
                 MessageBox.Show("Debe seleccionar un proveedor", "Validación",
@@ -348,7 +520,7 @@ namespace GUI
                 {
                     oUsuario = new Usuario() { IdUsuario = _Usuario.IdUsuario },
                     oProveedor = new Proveedor() { IdProveedor = Convert.ToInt32(txtidproveedor.Text) },
-                    TipoDocumento = lbltipodocumento.Content.ToString(), // Usar el Label en lugar del ComboBox
+                    TipoDocumento = lbltipodocumento.Content.ToString(),
                     NumeroDocumento = numerodocumento,
                     MontoTotal = Convert.ToDecimal(txttotalpagar.Text)
                 };
@@ -364,13 +536,14 @@ namespace GUI
                     if (result == MessageBoxResult.Yes)
                         Clipboard.SetText(numerodocumento);
 
-                    // Limpiar formulario
                     txtidproveedor.Text = "0";
                     txtdocproveedor.Text = "";
                     txtnombreproveedor.Text = "";
                     productosCompra.Clear();
                     calcularTotal();
                     limpiarProducto();
+                    SalirModoEdicion();
+                    ActualizarVista(); // ✅ NUEVO: Forzar actualización
                 }
                 else
                 {

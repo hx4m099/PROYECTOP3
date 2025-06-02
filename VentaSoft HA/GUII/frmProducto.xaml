@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sistema de Ventas - Gestión de Productos" 
         Height="700" 
-        Width="1200"
+        Width="1300"
         WindowStartupLocation="CenterScreen"
         Background="#F8F9FA">
 
@@ -12,8 +12,8 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#DEE2E6"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
@@ -30,8 +30,8 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#DEE2E6"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
@@ -48,7 +48,7 @@
             <Setter Property="Background" Value="#28A745"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Padding" Value="10,8"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Style.Triggers>
@@ -78,23 +78,23 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20" 
+        <!-- Header más compacto -->
+        <Border Grid.Row="0" Background="White" CornerRadius="6" Padding="12" Margin="0,0,0,10" 
                 BorderBrush="#E9ECEF" BorderThickness="1">
             <StackPanel>
                 <TextBlock Text="📦 Gestión de Productos" 
-                           FontSize="24" 
+                           FontSize="16" 
                            FontWeight="Bold" 
                            Foreground="#2C5AA0" 
-                           Margin="0,0,0,5"/>
+                           Margin="0,0,0,2"/>
                 <TextBlock Text="Administre el catálogo de productos del sistema" 
-                           FontSize="14" 
+                           FontSize="11" 
                            Foreground="#6C757D"/>
             </StackPanel>
         </Border>
@@ -102,47 +102,47 @@
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Left Panel - Product Details -->
-            <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="25" 
+            <!-- Left Panel - Product Details (más estrecho) -->
+            <Border Grid.Column="0" Background="White" CornerRadius="6" Padding="15" 
                     BorderBrush="#E9ECEF" BorderThickness="1">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="📝 Detalle Producto" 
-                                   FontSize="18" 
+                                   FontSize="14" 
                                    FontWeight="Bold" 
                                    Foreground="#495057" 
-                                   Margin="0,0,0,20"/>
+                                   Margin="0,0,0,12"/>
 
                         <!-- Hidden Fields -->
                         <TextBox x:Name="txtindice" Visibility="Hidden" Text="-1"/>
                         <TextBox x:Name="txtid" Visibility="Hidden" Text="0"/>
 
                         <!-- Código -->
-                        <StackPanel Margin="0,0,0,15">
-                            <TextBlock Text="Código:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Código:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,3" FontSize="11"/>
                             <TextBox x:Name="txtcodigo" 
-                                     Height="50" 
+                                     Height="32" 
                                      Style="{StaticResource ModernTextBoxStyle}"/>
                         </StackPanel>
 
                         <!-- Nombre -->
-                        <StackPanel Margin="0,0,0,15">
-                            <TextBlock Text="Nombre:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Nombre:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,3" FontSize="11"/>
                             <TextBox x:Name="txtnombre" 
-                                     Height="48" 
+                                     Height="32" 
                                      Style="{StaticResource ModernTextBoxStyle}"/>
                         </StackPanel>
 
                         <!-- Descripción -->
-                        <StackPanel Margin="0,0,0,15">
-                            <TextBlock Text="Descripción:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Descripción:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,3" FontSize="11"/>
                             <TextBox x:Name="txtdescripcion" 
-                                     Height="80" 
+                                     Height="60" 
                                      TextWrapping="Wrap"
                                      AcceptsReturn="True"
                                      VerticalScrollBarVisibility="Auto"
@@ -150,18 +150,18 @@
                         </StackPanel>
 
                         <!-- Categoría -->
-                        <StackPanel Margin="0,0,0,15">
-                            <TextBlock Text="Categoría:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Categoría:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,3" FontSize="11"/>
                             <ComboBox x:Name="cbocategoria" 
-                                      Height="40" 
+                                      Height="32" 
                                       Style="{StaticResource ModernComboBoxStyle}"/>
                         </StackPanel>
 
                         <!-- Estado -->
-                        <StackPanel Margin="0,0,0,25">
-                            <TextBlock Text="Estado:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="Estado:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,3" FontSize="11"/>
                             <ComboBox x:Name="cboestado" 
-                                      Height="40" 
+                                      Height="32" 
                                       Style="{StaticResource ModernComboBoxStyle}"/>
                         </StackPanel>
 
@@ -169,26 +169,26 @@
                         <StackPanel>
                             <Button x:Name="btnguardar" 
                                     Content="💾 Guardar" 
-                                    Height="45" 
-                                    FontSize="14"
-                                    Margin="0,0,0,10"
+                                    Height="32" 
+                                    FontSize="12"
+                                    Margin="0,0,0,6"
                                     Click="btnguardar_Click"
                                     Style="{StaticResource ActionButtonStyle}"/>
 
                             <Button x:Name="btnlimpiar" 
                                     Content="🧹 Limpiar" 
                                     Background="#6C757D"
-                                    Height="45" 
-                                    FontSize="14"
-                                    Margin="0,0,0,10"
+                                    Height="32" 
+                                    FontSize="12"
+                                    Margin="0,0,0,6"
                                     Click="btnlimpiar_Click"
                                     Style="{StaticResource ActionButtonStyle}"/>
 
                             <Button x:Name="btneliminar" 
                                     Content="🗑 Eliminar" 
                                     Background="#DC3545"
-                                    Height="45" 
-                                    FontSize="14"
+                                    Height="32" 
+                                    FontSize="12"
                                     Click="btneliminar_Click"
                                     Style="{StaticResource ActionButtonStyle}"/>
                         </StackPanel>
@@ -196,8 +196,8 @@
                 </ScrollViewer>
             </Border>
 
-            <!-- Right Panel - Products List -->
-            <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="25" 
+            <!-- Right Panel - Products List (más ancho) -->
+            <Border Grid.Column="2" Background="White" CornerRadius="6" Padding="15" 
                     BorderBrush="#E9ECEF" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -210,45 +210,46 @@
                     <!-- Title -->
                     <TextBlock Grid.Row="0" 
                                Text="📋 Lista de Productos" 
-                               FontSize="18" 
+                               FontSize="14" 
                                FontWeight="Bold" 
                                Foreground="#495057" 
-                               Margin="0,0,0,20"/>
+                               Margin="0,0,0,10"/>
 
-                    <!-- Search Section -->
-                    <Grid Grid.Row="1" Margin="0,0,0,20">
+                    <!-- Search Section (más compacto) -->
+                    <Grid Grid.Row="1" Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="8"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" 
-                                   Text="Buscar por:" 
+                                   Text="Buscar:" 
                                    FontWeight="SemiBold" 
                                    Foreground="#495057" 
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   FontSize="11"/>
 
                         <ComboBox Grid.Column="1" 
                                   x:Name="cbobusqueda" 
-                                  Height="35" 
-                                  Padding="10,6" 
-                                  FontSize="13"
+                                  Height="28" 
+                                  Padding="6,4" 
+                                  FontSize="11"
                                   BorderBrush="#DEE2E6" 
                                   BorderThickness="1"/>
 
                         <TextBox Grid.Column="3" 
                                  x:Name="txtbusqueda" 
-                                 Height="35" 
-                                 Padding="10" 
-                                 FontSize="13"
+                                 Height="28" 
+                                 Padding="6,0" 
+                                 FontSize="11"
                                  BorderBrush="#DEE2E6" 
                                  BorderThickness="1"
                                  VerticalContentAlignment="Center"/>
@@ -256,34 +257,34 @@
                         <Button Grid.Column="5" 
                                 x:Name="btnbuscar"
                                 Content="🔍" 
-                                Width="35" 
-                                Height="35" 
-                                FontSize="14"
+                                Width="28" 
+                                Height="28" 
+                                FontSize="11"
                                 Click="btnbuscar_Click"
                                 Style="{StaticResource RoundButtonStyle}"/>
 
                         <Button Grid.Column="7" 
                                 x:Name="btnlimpiarbuscador"
                                 Content="🧹" 
-                                Width="35" 
-                                Height="35" 
+                                Width="28" 
+                                Height="28" 
                                 Background="#6C757D"
-                                FontSize="14"
+                                FontSize="11"
                                 Click="btnlimpiarbuscador_Click"
                                 Style="{StaticResource RoundButtonStyle}"/>
 
                         <Button Grid.Column="9" 
                                 x:Name="btnexportar"
-                                Content="📥 Exportar Excel" 
-                                Height="35" 
-                                Padding="12,8" 
+                                Content="📥 Excel" 
+                                Height="28" 
+                                Padding="8,4" 
                                 FontWeight="Bold"
-                                FontSize="13"
+                                FontSize="11"
                                 Click="btnexportar_Click"
                                 Style="{StaticResource ActionButtonStyle}"/>
                     </Grid>
 
-                    <!-- DataGrid -->
+                    <!-- DataGrid (sin columnas en blanco) -->
                     <DataGrid Grid.Row="2" 
                               x:Name="dgvdata" 
                               AutoGenerateColumns="False"
@@ -299,23 +300,23 @@
                               BorderThickness="0"
                               RowBackground="White"
                               AlternatingRowBackground="#F8F9FA"
-                              FontSize="13"
-                              RowHeight="35"
-                              ColumnWidth="*"
+                              FontSize="11"
+                              RowHeight="28"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto">
 
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Seleccionar" Width="90">
+                            <DataGridTemplateColumn Header="Sel." Width="50">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="✓" 
                                                 Background="#28A745" 
                                                 Foreground="White" 
                                                 BorderThickness="0" 
-                                                Width="30" 
-                                                Height="30"
+                                                Width="24" 
+                                                Height="24"
                                                 FontWeight="Bold"
+                                                FontSize="10"
                                                 Cursor="Hand"
                                                 Click="btnseleccionar_Click"
                                                 Style="{StaticResource RoundButtonStyle}"/>
@@ -323,17 +324,91 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="0" IsReadOnly="True" Visibility="Collapsed"/>
-                            <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="120" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="180" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="IdCategoria" Binding="{Binding IdCategoria}" Width="0" IsReadOnly="True" Visibility="Collapsed"/>
-                            <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" Width="130" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="80" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Precio Compra" Binding="{Binding PrecioCompra, StringFormat=C}" Width="130" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Precio Venta" Binding="{Binding PrecioVenta, StringFormat=C}" Width="130" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="EstadoValor" Binding="{Binding EstadoValor}" Width="0" IsReadOnly="True" Visibility="Collapsed"/>
-                            <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="90" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Foreground" Value="#2C5AA0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="160" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="150" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" Width="110" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="70" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="P. Compra" Binding="{Binding PrecioCompra, StringFormat=C}" Width="100" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextAlignment" Value="Right"/>
+                                        <Setter Property="Foreground" Value="#28A745"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="P. Venta" Binding="{Binding PrecioVenta, StringFormat=C}" Width="100" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextAlignment" Value="Right"/>
+                                        <Setter Property="Foreground" Value="#007BFF"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="90" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="6,4"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
 
                         <DataGrid.ColumnHeaderStyle>
@@ -341,37 +416,46 @@
                                 <Setter Property="Background" Value="#F8F9FA"/>
                                 <Setter Property="Foreground" Value="#495057"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Padding" Value="10,8"/>
+                                <Setter Property="Padding" Value="6,8"/>
                                 <Setter Property="BorderBrush" Value="#DEE2E6"/>
                                 <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
 
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
-                                <Setter Property="Padding" Value="10,8"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                <Setter Property="Margin" Value="0"/>
                             </Style>
                         </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="MinHeight" Value="28"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </DataGrid.RowStyle>
                     </DataGrid>
 
                     <!-- Summary Section -->
                     <Border Grid.Row="3" 
                             Background="#F8F9FA" 
                             CornerRadius="4" 
-                            Padding="15" 
-                            Margin="0,15,0,0">
+                            Padding="10" 
+                            Margin="0,10,0,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock Text="📊 Total de productos: " 
+                            <TextBlock Text="📊 Total: " 
                                        FontWeight="Bold" 
                                        Foreground="#495057" 
-                                       FontSize="14"/>
+                                       FontSize="11"/>
                             <TextBlock x:Name="lblTotalProductos" 
                                        Text="0" 
                                        FontWeight="Bold" 
                                        Foreground="#007BFF" 
-                                       FontSize="16"/>
+                                       FontSize="12"/>
                         </StackPanel>
                     </Border>
                 </Grid>

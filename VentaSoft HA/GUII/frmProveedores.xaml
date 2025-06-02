@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sistema de Ventas - Gestión de Proveedores" 
         Height="700" 
-        Width="1200"
+        Width="1300"
         WindowStartupLocation="CenterScreen"
         Background="#F8F9FA">
 
@@ -143,18 +143,20 @@
                         <StackPanel Margin="0,0,0,15">
                             <TextBlock Text="Razón Social:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
                             <TextBox x:Name="txtrazonsocial" 
-                                     Height="46" 
+                                     Height="40" 
                                      Padding="12" 
                                      FontSize="14"
                                      BorderBrush="#DEE2E6" 
-                                     BorderThickness="1"/>
+                                     BorderThickness="1"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="False"/>
                         </StackPanel>
 
                         <!-- Correo -->
                         <StackPanel Margin="0,0,0,15">
                             <TextBlock Text="Correo Electrónico:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
                             <TextBox x:Name="txtcorreo" 
-                                     Height="50" 
+                                     Height="40" 
                                      Padding="12" 
                                      FontSize="14"
                                      BorderBrush="#DEE2E6" 
@@ -165,7 +167,7 @@
                         <StackPanel Margin="0,0,0,15">
                             <TextBlock Text="Teléfono:" FontWeight="SemiBold" Foreground="#495057" Margin="0,0,0,5"/>
                             <TextBox x:Name="txttelefono" 
-                                     Height="46" 
+                                     Height="40" 
                                      Padding="12" 
                                      FontSize="14"
                                      BorderBrush="#DEE2E6" 
@@ -336,10 +338,12 @@
                               BorderThickness="0"
                               RowBackground="White"
                               AlternatingRowBackground="#F8F9FA"
-                              FontSize="13">
+                              FontSize="13"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto">
 
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Seleccionar" Width="80">
+                            <DataGridTemplateColumn Header="Seleccionar" Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="✓" 
@@ -357,12 +361,61 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="60" IsReadOnly="True" Visibility="Hidden"/>
-                            <DataGridTextColumn Header="Nro Documento" Binding="{Binding Documento}" Width="130" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Razón Social" Binding="{Binding RazonSocial}" Width="*" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Correo" Binding="{Binding Correo}" Width="200" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="120" IsReadOnly="True"/>
+
+                            <DataGridTextColumn Header="Nro Documento" Binding="{Binding Documento}" Width="130" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Razón Social" Binding="{Binding RazonSocial}" Width="250" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Foreground" Value="#2C5AA0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Correo" Binding="{Binding Correo}" Width="220" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="120" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
                             <DataGridTextColumn Header="EstadoValor" Binding="{Binding EstadoValor}" Width="80" IsReadOnly="True" Visibility="Hidden"/>
-                            <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100" IsReadOnly="True"/>
+
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100" IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
 
                         <DataGrid.ColumnHeaderStyle>
@@ -370,19 +423,29 @@
                                 <Setter Property="Background" Value="#F8F9FA"/>
                                 <Setter Property="Foreground" Value="#495057"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Padding" Value="10,8"/>
+                                <Setter Property="Padding" Value="10,12"/>
                                 <Setter Property="BorderBrush" Value="#DEE2E6"/>
                                 <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="FontSize" Value="12"/>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
 
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
-                                <Setter Property="Padding" Value="10,8"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
                             </Style>
                         </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="MinHeight" Value="40"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </DataGrid.RowStyle>
                     </DataGrid>
 
                     <!-- Summary Section -->

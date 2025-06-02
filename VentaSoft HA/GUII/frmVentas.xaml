@@ -576,7 +576,7 @@
                                  FontWeight="Bold"
                                  FontSize="12"
                                  Foreground="#28A745"
-                                 Height="28"
+                                 Height="30"
                                  Padding="6"
                                  TextChanged="txttotalpagar_TextChanged"/>
                     </Grid>
